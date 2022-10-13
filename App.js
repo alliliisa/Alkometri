@@ -1,12 +1,13 @@
 import React, {useState} from "react";
-import { StyleSheet, TextInput, View, Text, Button } from "react-native";
+import { StyleSheet, TextInput, View, Text, Button, ScrollView } from "react-native";
+import { Picker } from "@react-native-picker/picker";
 import RadioForm from 'react-native-simple-radio-button';
 
 //nimetään tarvittavat muuttujat laskentaa varten
 export default function App(){
-  const [bottles, setBottles] = useState();
-  const [time, setTime] = useState();
-  const [weight, setWeight] = useState();
+  const [bottles, setBottles] = useState(0);
+  const [time, setTime] = useState(0);
+  const [weight, setWeight] = useState(0);
   const [gender, setGender] = useState('male')
   const [promilles, setPromilles] = useState(0);
   
@@ -14,6 +15,50 @@ export default function App(){
   const genders =[
     {label:'Male', value: 'male'},
     {label: 'Female',  value: 'female'}
+  ];
+
+  const amount = [
+    {label: '1', value: 1},
+    {label: '2', value: 2},
+    {label: '3', value: 3},
+    {label: '4', value: 4},
+    {label: '5', value: 5},
+    {label: '6', value: 6},
+    {label: '7', value: 7},
+    {label: '8', value: 8},
+    {label: '9', value: 9},
+    {label: '10', value: 10},
+    {label: '11', value: 11},
+    {label: '12', value: 12},
+    {label: '13', value: 13},
+    {label: '14', value: 14},
+    {label: '15', value: 15},
+    {label: '16', value: 16},
+    {label: '17', value: 17},
+    {label: '18', value: 18},
+    {label: '19', value: 19},
+    {label: '20', value: 20},
+    {label: '21', value: 21},
+    {label: '22', value: 22},
+    {label: '23', value: 23},
+    {label: '24', value: 24},
+  ];
+
+  const hours = [
+    {label: '1', value: 1},
+    {label: '2', value: 2},
+    {label: '3', value: 3},
+    {label: '4', value: 4},
+    {label: '5', value: 5},
+    {label: '6', value: 6},
+    {label: '7', value: 7},
+    {label: '8', value: 8},
+    {label: '9', value: 9},
+    {label: '10', value: 10},
+    {label: '11', value: 11},
+    {label: '12', value: 12},
+    {label: '13', value: 13},
+    {label: '14', value: 14},
   ];
 
   //Lasku funktio
@@ -44,35 +89,55 @@ export default function App(){
 
     //Appin toiminta
   return (
+    <ScrollView>
     <View style={styles.container}>
       <Text style={styles.title}>Alli's drunkometer</Text>
     
       <View style={styles.field}>
         <Text>How many bottles did you drink?</Text>
-        <TextInput style={styles.input} value={bottles} onChangeText={text => setBottles(text)} placeholder='quantity' keyboardType='decimal-pad'/>
-          </View>
+        <Picker style={styles.picker}
+        onValueChange={(itemValue) => setBottles(itemValue)}
+        selectedValue={bottles}>
+          
+          {amount.map((amount,index)=>(
+            <Picker.Item key={index} label={amount.label} 
+            value={amount.value}/>
+            ))
+          }
+        </Picker>
+      </View>
 
       <View style={styles.field}> 
-        <Text style={styles.field}>In how many hours?</Text>
-        <TextInput style={styles.input} value={time} onChangeText={text => setTime(text)} placeholder='hours' keyboardType='decimal-pad'/>
+        <Text>In how many hours?</Text>
+        <Picker style={styles.picker}
+        onValueChange={(itemValue) => setTime(itemValue)}
+        selectedValue={time}>
+          
+          {hours.map((hours,index)=>(
+            <Picker.Item key={index} label={hours.label} 
+            value={hours.value}/>
+            ))
+          }
+        </Picker>
       </View>
 
       <View style={styles.field}>  
-        <Text style={styles.field}>How much do you weight?</Text>
-        <TextInput style={styles.input} value={weight} onChangeText={text => setWeight(text)} placeholder='kg' keyboardType='decimal-pad'/>
+        <Text>How much do you weight?</Text>
+        <TextInput style={styles.input} value={weight} onChangeText={text => setWeight(text)} placeholder='quantity' keyboardType='decimal-pad'/>
       </View>
 
       <View style={styles.field}>  
-        <Text style={styles.field}>Gender:</Text>
+        <Text>Gender:</Text>
           <RadioForm style={styles.radio} buttonSize = {10} radio_props={genders} initial={0} onPress={(value) => {setGender(value)}}/>
       </View>
 
       <View style={styles.field}>
-        <Text style={styles.field}>Promilles:</Text>
+        <Text>Promilles:</Text>
         <Text style={styles.input}>{promilles.toFixed(2)}</Text>
       </View>  
         <Button onPress={calculate} title="calculate"></Button>
     </View>
+    </ScrollView>
   );
 }
 
@@ -114,5 +179,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
   }, 
+  picker:{
+    width:200,
+  },
 });
-
